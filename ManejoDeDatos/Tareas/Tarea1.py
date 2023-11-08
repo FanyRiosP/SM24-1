@@ -1,0 +1,132 @@
+# TAREA 1
+# Ríos Pérez Fany
+
+''' 
+1. Escribe una función recursiva que reciba una cadena y que diga si dicha cadena es un palíndromo. 
+'''
+
+def palindromo(palabra:str)->str:
+    tam = len(palabra)
+    if tam <= 1:
+        return f"'{palabra}' es una letra"
+
+    for i in range(tam // 2):
+        if palabra[i] == palabra[tam - i -1]:
+            palindromo(palabra[i:tam - i - 1])
+            return f"'{palabra}' es un palíndromo :)"
+        else: 
+            return f"'{palabra}' no es un palíndromo :c"
+
+print(palindromo("Hola"))
+    
+'''
+2. De manera recursiva calcula la suma de las primeras n potencias de 2 en una función llamada sumaPotencias2. 
+Por ejemplo sumaPotencias2(1) regresa 2, sumaPotencias2(2) regresa 6, sumaPotencias2(3) regresa 14, etc.
+'''
+
+def suma_de_potencias(n):
+    suma = 0
+
+    if n == 1:
+        suma = 2
+    else:
+        suma = (2 ** n) + suma_de_potencias(n - 1)
+
+    return suma
+
+''' 
+3. En el ordenamiento de burbuja el indice interno va recorriendo de izquierda a derecha, buscando el elemento más grande 
+y llevándolo a la derecha. Modifica el ordenamiento para que sea bidireccional, es decir el indice interno primero lleva 
+el elemento más grande a la derecha como antes, pero cuando llega al ultimo, se invierte y lleva al más pequeño de derecha 
+a izquierda.
+'''
+
+def bubble_sort_mod(secuencia):
+    izquierda = 0
+    derecha = len(secuencia) - 1
+
+    while izquierda < derecha:
+        for i in range(izquierda, derecha):
+            if secuencia[i] > secuencia[i + 1]:
+                secuencia[i], secuencia[i + 1] = secuencia[i + 1], secuencia[i]
+        derecha -= 1
+
+        for i in range(derecha, izquierda, -1):
+            if secuencia[i - 1] > secuencia[i]:
+                secuencia[i - 1], secuencia[i] = secuencia[i], secuencia[i - 1]
+        izquierda += 1
+    return secuencia
+
+lista = [3, 5, 9, 4, 2]
+'''
+print(bubble_sort(lista), 1)
+print(bubble_sort_mod(lista), 2)
+'''
+
+
+'''
+4. Modifica el ordenamiento por inserción para que cuente el número de copias y el número de comparaciones que realiza 
+durante un ordenamiento. Al final del ordenamiento el método debe reportar los totales.
+'''
+
+def insercion_mod(secuencia):
+    n = 0
+    for i in range(1, len(secuencia)):
+        v = secuencia[i]
+        j = i - 1
+        while j >= 0 and v < secuencia[j]:
+            secuencia[j + 1] = secuencia[j]
+            j -= 1
+            n += 1
+        secuencia[j + 1] = v
+    return secuencia, f"Comparaciones = {n}"
+
+# print(insercion_mod(lista))
+
+'''
+5. Escribe un programa que lea el archivo Alicia.txt y responda las siguientes preguntas: 
+¿Cual es la palabra más frecuente? ¿Cual es la letra más frecuente?
+Ignore cualquier caracter que no sea alfanumerico.
+'''
+
+archivo = open(r'ManejoDeDatos\Tareas\Alicia.txt', 'r')
+
+l = archivo.readlines()
+
+l2 = []
+b = "\n,.-;"
+t = str.maketrans('', '', b)
+
+l2 = [renglon.translate(t) for renglon in l]
+
+texto = " ".join(l2)
+palabras = texto.split()
+
+frecuenciaP = {}
+frecuenciaL = {}
+
+for palabra in palabras:
+    palabra = palabra.lower()  
+    if palabra in frecuenciaP:
+        frecuenciaP[palabra] += 1
+    else:
+        frecuenciaP[palabra] = 1
+
+for letra in texto:
+    if letra.isalpha():
+        letra = letra.lower() 
+        if letra in frecuenciaL:
+            frecuenciaL[letra] += 1
+        else:
+            frecuenciaL[letra] = 1
+
+palabraMax = max(frecuenciaP, key = frecuenciaP.get)
+frecuenciaMaxP = frecuenciaP[palabraMax]
+
+letraMax = max(frecuenciaL, key = frecuenciaL.get)
+frecuenciaMaxL = frecuenciaL[letraMax]
+
+print(f"La palabra más común es '{palabraMax}'")
+print(f"La letra más común es '{letraMax}'")
+
+
